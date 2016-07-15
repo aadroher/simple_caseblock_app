@@ -1,41 +1,68 @@
 import 'whatwg-fetch';
+import _ from 'lodash';
 
 export default class UserDataStore {
 
     constructor() {
         this.apiBaseURL = "https://test3.caseblocks.com/case_blocks/search";
-        this.userReference = "";
         this.authToken = "xFMvzLxiMsy8XdgDqT7r";
-
+        this.userCaseTypeId = 165;
+        this.complaintCaseTypeId = 160;
+        this.loaded = false;
+        this.results = {};
     }
 
-    getApiEndPoint() {
-        return `${this.apiBaseURL}?query=customer_reference:${this.userReference}&auth_token=${this.authToken}`
+    getApiEndPoint(userReference) {
+        return `${this.apiBaseURL}?query=customer_reference:${userReference}&auth_token=${this.authToken}`;
     }
 
-    setUserReference(userReference){
-        this.userReference = userReference;
-    }
-
-    fetchUserData(userReference) {
-        return fetch(this.getApiEndPoint()).then((response) => {
+    fetchData(userReference) {
+        return fetch(
+            this.getApiEndPoint(userReference)
+        ).then((response) => {
             return response.json();
         }).then((json) => {
-            const caseType = this.findUserById(json, 2);
-            console.log(json);
-            console.log(caseType);
+            this.results = json;
+            this.loaded = true;
         });
     }
 
-    getComplaints(caseTypes) {
-        const caseTypeId = 160;
-        return caseTypes.filter((caseType) => {
-            return caseType.case_type_id  == caseTypeId;
+    getUserFromData(userReference){
+        const userCaseType = _.find(this.results, {case_type_id: this.userCaseTypeId});
+        // TODO: Check what is wrong with the need of type casting.
+        const userCase = _.find(userCaseType.cases, {customer_reference: parseInt(userReference)});
+        return new User({
+            firstName: userCase.first_name,
+            lastName: userCase.last_name,
+            complaints: this.getComplaintsFromData()
         })
     }
 
+    getComplaintsFromData(){
+        const complaintCaseType = _.find(this.results, {case_type_id: this.complaintCaseTypeId});
+        return _.map(complaintCaseType.cases, (case_entry) => {
+            return new Complaint({
+                reference: case_entry.complaint_reference,
+                summary: case_entry.complaint_summary,
+                status: case_entry.current_state
+            })
+        })
+    }
 }
 
+
 class User {
-    constructor
+    constructor({ firstName, lastName, complaints=[] }){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.complaints = complaints;
+    }
+}
+
+class Complaint {
+    constructor({ reference, summary, status }) {
+        this.reference = reference;
+        this.summary = summary;
+        this.status = status;
+    }
 }

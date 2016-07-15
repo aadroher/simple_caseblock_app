@@ -4,12 +4,10 @@ import UserDataStore from "../model";
 
 export default class InputUserIdForm extends React.Component {
 
-    constructor() {
-        super();
-        this.setState({
-            dataStore: new UserDataStore(),
-            value: ''
-        });
+    constructor(props) {
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
+        this.submit = this.submit.bind(this);
     }
 
     handleChange(event) {
@@ -18,9 +16,9 @@ export default class InputUserIdForm extends React.Component {
         })
     }
 
-    getUser() {
+    submit() {
         const userReference = this.state.value;
-        this.state.dataStore.fetchUserData(userReference);
+        this.props.loadUserData(userReference);
     }
 
     render() {
@@ -34,11 +32,11 @@ export default class InputUserIdForm extends React.Component {
                             </label>
                             <input id="userId"
                                    className="form-control"
-                                   type="number"
-                                   onChange={this.handleChange.bind(this)}/>
+                                   type="text"
+                                   onChange={this.handleChange}/>
                         </div>
                         <a className="btn btn-default"
-                                onClick={this.getUser.bind(this)}>
+                                onClick={this.submit}>
                             Enter
                         </a>
                     </form>
