@@ -12,27 +12,48 @@ class Application extends React.Component {
         this.state = {
             page: 'user_input',
             activeUser: null,
+            activeComplaint: null,
         };
+        this.selectUser = this.selectUser.bind(this);
         this.loadUserData = this.loadUserData.bind(this);
+        this.selectComplaint = this.selectComplaint.bind(this);
         // WARNING: Only for testing.
         this.loadUserData(2);
     }
 
-    loadUserData(userReference) {
-        this.userDataStore.fetchData(userReference).then(() => {
+    selectUser(userReference){
+        if (!this.userDataStore.loaded) {
+            this.loadUserData(userReference);
+        } else {
             const activeUser = this.userDataStore.getUserFromData(userReference);
             this.setState({
                 page: 'complaint_list',
                 activeUser: activeUser
             });
-        })
+        }
+    }
+
+    loadUserData(userReference) {
+        this.userDataStore.fetchData(userReference).then(() => {
+            this.selectUser(userReference);
+        });
+    }
+
+    selectComplaint(complaintReference) {
+        const activeComplaint = this.state.activeUser.getComplaint(complaintReference);
+        this.setState({
+            page: 'complaint_detail',
+            activeComplaint: activeComplaint
+        });
     }
 
     render() {
         return (
             <DefaultLayout page={this.state.page}
-                           loadUserData={this.loadUserData}
-                           activeUser={this.state.activeUser} />
+                           loadUserData={this.selectUser}
+                           activeUser={this.state.activeUser}
+                           selectComplaint={this.selectComplaint}
+                           activeComplaint={this.state.activeComplaint}/>
         );
     }
 }

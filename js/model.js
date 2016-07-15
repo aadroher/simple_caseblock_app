@@ -40,22 +40,32 @@ export default class UserDataStore {
 
     getComplaintsFromData(){
         const complaintCaseType = _.find(this.results, {case_type_id: this.complaintCaseTypeId});
-        return _.map(complaintCaseType.cases, (case_entry) => {
+        const complaints = _.map(complaintCaseType.cases, (case_entry) => {
             return new Complaint({
                 reference: case_entry.complaint_reference,
                 summary: case_entry.complaint_summary,
                 status: case_entry.current_state
             })
         })
+        return _.sortBy(complaints, (complaint) => {
+            return complaint.reference
+        });
     }
 }
 
 
 class User {
+
     constructor({ firstName, lastName, complaints=[] }){
         this.firstName = firstName;
         this.lastName = lastName;
         this.complaints = complaints;
+    }
+
+    getComplaint(complaintReference) {
+        return _.find(this.complaints, {
+            reference: complaintReference
+        })
     }
 }
 

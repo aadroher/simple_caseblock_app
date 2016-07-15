@@ -35,10 +35,10 @@ export default class InputUserIdForm extends React.Component {
                                    type="text"
                                    onChange={this.handleChange}/>
                         </div>
-                        <a className="btn btn-default"
+                        <span className="btn btn-primary"
                                 onClick={this.submit}>
                             Enter
-                        </a>
+                        </span>
                     </form>
                 </div>
             </div>

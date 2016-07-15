@@ -1,6 +1,7 @@
 import React from "react";
 import InputUserIdForm from "../views/InputUserId";
 import ComplaintList from "../views/ComplaintList";
+import ComplaintDetail from "../views/ComplaintDetail";
 
 export default class DefaultLayout extends React.Component {
     render() {
@@ -8,7 +9,10 @@ export default class DefaultLayout extends React.Component {
             <div>
                 <TopBar/>
                 <Body page={this.props.page}
-                      loadUserData={this.props.loadUserData}/>
+                      loadUserData={this.props.loadUserData}
+                      activeUser={this.props.activeUser}
+                      selectComplaint={this.props.selectComplaint}
+                      activeComplaint={this.props.activeComplaint}/>
             </div>
 
         );
@@ -18,12 +22,20 @@ export default class DefaultLayout extends React.Component {
 class Body extends React.Component {
     render() {
         var page;
-        if(this.props.page === 'user_input') {
-            page = <InputUserIdForm loadUserData={this.props.loadUserData}/>
-        } else if (this.props.activeUser) {
-            page = <ComplaintList activeUser={this.props.activeUser}/>
-        } else {
-            // Error
+        switch (this.props.page) {
+            case 'user_input':
+                page = <InputUserIdForm loadUserData={this.props.loadUserData}/>
+                break;
+            case 'complaint_list':
+                page = <ComplaintList activeUser={this.props.activeUser}
+                                      selectComplaint={this.props.selectComplaint}/>
+                break;
+            case 'complaint_detail':
+                page = <ComplaintDetail activeUser={this.props.activeUser}
+                                        complaint={this.props.activeComplaint}/>
+                break;
+            default:
+                // Error
         }
         return (
             <div className="container-fluid">
