@@ -4,7 +4,7 @@ const webpack = require('webpack');
 module.exports = {
     context: __dirname,
     devtool: debug ? "inline-sourcemap" : null,
-    entry: "./js/main.js",
+    entry: ["whatwg-fetch", "./js/main.js"],
     module: {
         loaders: [
             {
