@@ -2,6 +2,15 @@ import React from "react";
 
 export default class ComplaintDetail extends React.Component {
 
+    constructor(props){
+        super(props);
+        this.back = this.back.bind(this);
+    }
+
+    back() {
+        const userReference = this.props.activeUser.reference;
+        this.props.selectUser(userReference);
+    }
 
     render() {
         return (
@@ -23,7 +32,7 @@ export default class ComplaintDetail extends React.Component {
                         {this.props.complaint.status}
                     </dl>
                 </dl>
-                <span className="btn btn-primary">
+                <span className="btn btn-primary" onClick={this.back}>
                     Back
                 </span>
             </div>

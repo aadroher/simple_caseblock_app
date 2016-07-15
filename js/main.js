@@ -17,8 +17,6 @@ class Application extends React.Component {
         this.selectUser = this.selectUser.bind(this);
         this.loadUserData = this.loadUserData.bind(this);
         this.selectComplaint = this.selectComplaint.bind(this);
-        // WARNING: Only for testing.
-        this.loadUserData(2);
     }
 
     selectUser(userReference){
@@ -50,7 +48,7 @@ class Application extends React.Component {
     render() {
         return (
             <DefaultLayout page={this.state.page}
-                           loadUserData={this.selectUser}
+                           selectUser={this.selectUser}
                            activeUser={this.state.activeUser}
                            selectComplaint={this.selectComplaint}
                            activeComplaint={this.state.activeComplaint}/>

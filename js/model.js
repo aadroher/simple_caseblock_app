@@ -34,6 +34,7 @@ export default class UserDataStore {
         return new User({
             firstName: userCase.first_name,
             lastName: userCase.last_name,
+            reference: userReference,
             complaints: this.getComplaintsFromData()
         })
     }
@@ -56,9 +57,10 @@ export default class UserDataStore {
 
 class User {
 
-    constructor({ firstName, lastName, complaints=[] }){
+    constructor({ firstName, lastName, reference, complaints=[] }){
         this.firstName = firstName;
         this.lastName = lastName;
+        this.reference = reference;
         this.complaints = complaints;
     }
 

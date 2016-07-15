@@ -1,7 +1,5 @@
 import React from "react";
 
-import UserDataStore from "../model";
-
 export default class InputUserIdForm extends React.Component {
 
     constructor(props) {
@@ -18,7 +16,7 @@ export default class InputUserIdForm extends React.Component {
 
     submit() {
         const userReference = this.state.value;
-        this.props.loadUserData(userReference);
+        this.props.selectUser(userReference);
     }
 
     render() {

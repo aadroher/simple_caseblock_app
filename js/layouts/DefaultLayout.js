@@ -9,7 +9,7 @@ export default class DefaultLayout extends React.Component {
             <div>
                 <TopBar/>
                 <Body page={this.props.page}
-                      loadUserData={this.props.loadUserData}
+                      selectUser={this.props.selectUser}
                       activeUser={this.props.activeUser}
                       selectComplaint={this.props.selectComplaint}
                       activeComplaint={this.props.activeComplaint}/>
@@ -24,7 +24,7 @@ class Body extends React.Component {
         var page;
         switch (this.props.page) {
             case 'user_input':
-                page = <InputUserIdForm loadUserData={this.props.loadUserData}/>
+                page = <InputUserIdForm selectUser={this.props.selectUser}/>
                 break;
             case 'complaint_list':
                 page = <ComplaintList activeUser={this.props.activeUser}
@@ -32,7 +32,8 @@ class Body extends React.Component {
                 break;
             case 'complaint_detail':
                 page = <ComplaintDetail activeUser={this.props.activeUser}
-                                        complaint={this.props.activeComplaint}/>
+                                        complaint={this.props.activeComplaint}
+                                        selectUser={this.props.selectUser}/>
                 break;
             default:
                 // Error
