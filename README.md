@@ -1,4 +1,4 @@
-# Simple Caseblock App
+# Simple Caseblocks App
 An simple exercise with the CaseBlocks API
 
 ### Usage
